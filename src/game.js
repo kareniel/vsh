@@ -1,7 +1,8 @@
+var os = require('os')
 var path = require('path')
 
 module.exports = {
-  fakeRoot: path.join(process.cwd(), '/rootfs'),
+  fakeRoot: path.join(os.homedir(), '.diagonal/vsh/rootfs'),
   shell: 'vsh',
   user: {
     name: 'user'

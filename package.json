@@ -3,8 +3,11 @@
   "version": "0.0.0",
   "description": "cli",
   "main": "src",
+  "bin": {
+    "vsh": "./src/index.js"
+  },
   "scripts": {
-    "start": "node src",
+    "start": "nodemon --no-stdin --no-update-notifier --quiet src",
     "test": "standard --fix"
   },
   "author": "Diagonal Systems Inc. <hello@diagonal.sh>",

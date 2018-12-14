@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 var path = require('path')
-var fs = require('fs')
 var fse = require('fs-extra')
 var inquirer = require('inquirer')
 var inquirerCmd = require('inquirer-command-prompt')
@@ -10,14 +9,10 @@ var chalk = require('chalk')
 var game = require('./game')
 var commands = require('./commands')
 
-var { version } = require('../package.json')
-
 const validCommands = Object.keys(commands)
 
 ;(async () => {
   init()
-
-  print(`hacklab v${version}`)
 
   while (true) {
     await loop()
@@ -32,20 +27,11 @@ function init () {
 }
 
 function genRootFS () {
-  const dirs = [
-    'bin', 'dev', 'etc', 'lib', 'proc', 'sbin', 'mnt', 'sys', 'tmp', 'usr'
-  ]
+  if (fse.existsSync(game.fakeRoot)) return
 
-  const devices = [
-    'console', 'full', 'null', 'log', 'random', 'tty', 'urandom', 'zero'
-  ]
+  var src = path.join(process.cwd(), 'data/rootfs')
 
-  dirs.forEach(dir => fse.mkdirpSync(path.join(game.fakeRoot, dir)))
-  devices.forEach(dev => touch(path.join(game.fakeRoot, 'dev', dev)))
-}
-
-function touch (filename) {
-  fs.closeSync(fs.openSync(filename, 'w'))
+  fse.copySync(src, game.fakeRoot)
 }
 
 async function exec (cmd, args) {
